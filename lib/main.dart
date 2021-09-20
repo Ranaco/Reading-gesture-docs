@@ -42,6 +42,27 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> _openDialogBox() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.grey.shade900,
+            shape: StadiumBorder(),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  GestureDetector(
+                      child: Text(
+                    'Take a photo',
+                  ))
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,7 +118,7 @@ class _HomePageState extends State<HomePage> {
             height: 20,
           ),
           MaterialButton(
-            onPressed: onCamera,
+            onPressed: _openDialogBox,
             child: Text(
               'Upload from camera',
               style: TextStyle(color: Colors.grey),
