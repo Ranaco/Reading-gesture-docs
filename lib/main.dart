@@ -23,12 +23,21 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   ImagePicker picker = ImagePicker();
   String imagePath = "";
-
+  String cameraPath = "";
   Future onClick() async {
     final imagePicker = await picker.pickImage(source: ImageSource.gallery);
     if (imagePicker != null) {
       setState(() {
         imagePath = imagePicker.path;
+      });
+    }
+  }
+
+  Future onCamera() async {
+    final camera = await picker.pickImage(source: ImageSource.camera);
+    if (camera != null) {
+      setState(() {
+        cameraPath = camera.path;
       });
     }
   }
@@ -59,7 +68,23 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.all(Radius.circular(300.0)),
                   ),
                 )
-              : Container(),
+              : imagePath == null
+                  ? Container()
+                  : cameraPath != ""
+                      ? Container(
+                          width: 200,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: FileImage(
+                                File(imagePath),
+                              ),
+                            ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(300.0)),
+                          ),
+                        )
+                      : Container(),
           MaterialButton(
             onPressed: onClick,
             child: Text(
@@ -68,6 +93,17 @@ class _HomePageState extends State<HomePage> {
             ),
             color: Colors.grey.shade900,
           ),
+          SizedBox(
+            height: 20,
+          ),
+          MaterialButton(
+            onPressed: onCamera,
+            child: Text(
+              'Upload from camera',
+              style: TextStyle(color: Colors.grey),
+            ),
+            color: Colors.grey.shade900,
+          )
         ],
       )),
     );
